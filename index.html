@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>运乘 · 观宅</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/build/three.module.js",
+          "three/addons/controls/OrbitControls.js": "./vendor/three/examples/jsm/controls/OrbitControls.js",
+          "three/addons/exporters/OBJExporter.js": "./vendor/three/examples/jsm/exporters/OBJExporter.js",
+          "three/addons/exporters/GLTFExporter.js": "./vendor/three/examples/jsm/exporters/GLTFExporter.js"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/yuncheng-guanzhai-pages/assets/home-D2AiYdw-.js"></script>
+    <link rel="modulepreload" crossorigin href="/yuncheng-guanzhai-pages/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/yuncheng-guanzhai-pages/assets/home-BdKVVh_s.css">
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-brand" href="index.html"
+        ><span class="hd-mark">运</span><span>运乘<em>观宅</em></span></a
+      >
+      <nav class="hd-nav">
+        <a href="app.html#report/sample">样例报告</a>
+        <a href="app.html#reports">我的报告</a>
+        <a class="hd-cta" href="app.html#upload">上传户型图</a>
+      </nav>
+    </header>
+    <main class="page">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="label">运乘 · 观宅</p>
+          <h1>原来风水，也可以简单入手。</h1>
+          <p class="lead">
+            上传户型图，标一下门的位置，就能拿到一份居住环境诊断报告：哪一处要留意、可以怎么调整，拿不准的还能找师傅问清楚。
+          </p>
+          <div class="steps">
+            <article class="step-copy on" data-step="0">
+              <b>上传户型</b>
+              <p>户型图会变成一栋可以转的立体宅。</p>
+            </article>
+            <article class="step-copy" data-step="1">
+              <b>罗盘扫描</b>
+              <p>罗盘扫一遍全屋，定出朝向与八个方位——线下看宅也是师傅带罗盘上门。</p>
+            </article>
+            <article class="step-copy" data-step="2">
+              <b>确认门位</b>
+              <p>系统先预判门的大致方位，你点一下确认。门在哪一宫，八宫吉凶就跟着排。</p>
+            </article>
+            <article class="step-copy" data-step="3">
+              <b>看气流</b>
+              <p>
+                门进出的气走得顺不顺，会影响前面结论的轻重。报告用四种情况说明：有进有出、到尽头、多次转折、背侧朝口。
+              </p>
+            </article>
+            <article class="step-copy" data-step="4">
+              <b>读报告</b>
+              <p>
+                八宫、门主灶、气路逐层展开：哪处要留意、可以怎么调整，拿不准的标成待确认，报告一次给全。
+              </p>
+            </article>
+          </div>
+          <ol class="step-tabs" aria-label="演示步骤">
+            <li><button data-go="0" aria-current="true">01 上传</button></li>
+            <li><button data-go="1">02 扫描</button></li>
+            <li><button data-go="2">03 门位</button></li>
+            <li><button data-go="3">04 气流</button></li>
+            <li><button data-go="4">05 报告</button></li>
+          </ol>
+          <div class="actions">
+            <a class="btn" href="app.html#upload">上传户型图</a>
+            <a class="link" href="app.html#report/sample">看一份样例报告 →</a>
+          </div>
+          <button id="replay" class="mini">重播演示</button>
+        </div>
+        <div class="stage">
+          <div class="hero-scene" data-step="1">
+            <div class="scene-top">
+              <span>示例住宅 / 震门宅</span
+              ><span class="scene-status" id="scene-status" role="status">正在准备示例…</span>
+            </div>
+            <div class="animation-modes" aria-hidden="true">
+              <button data-animation-view="1">罗盘展开</button
+              ><button data-animation-view="2">门主灶</button
+              ><button data-animation-view="3">看气路</button>
+            </div>
+            <div class="compass-scene-reading">
+              <b id="scene-palace">震宫 · 伏位</b
+              ><span id="scene-palace-relation">门宫起点 · 木木比和</span>
+            </div>
+            <span class="coordinate">八宅大游年 · 以门为伏位</span>
+            <three-d-stage name="yuncheng-home-hero" background="#0b0e0d"></three-d-stage>
+            <div id="fallback">
+              <svg viewBox="0 0 500 400" role="img" aria-label="两室一厅示例平面图">
+                <rect
+                  x="25"
+                  y="25"
+                  width="450"
+                  height="350"
+                  fill="#151a18"
+                  stroke="#5d6a63"
+                  stroke-width="7"
+                ></rect>
+                <path
+                  d="M220 25V150 M220 245V375 M25 215H165 M200 215H220 M315 25V135H360 M415 135H475"
+                  fill="none"
+                  stroke="#5d6a63"
+                  stroke-width="6"
+                ></path>
+                <g fill="#2c3a33" stroke="#0b0e0d" stroke-width="4">
+                  <rect x="78" y="62" width="95" height="115"></rect>
+                  <rect x="73" y="247" width="80" height="99"></rect>
+                  <rect x="253" y="233" width="50" height="99"></rect>
+                  <rect x="334" y="42" width="121" height="37"></rect>
+                </g>
+                <circle cx="370" cy="201" r="28" fill="#3a3226"></circle>
+                <g fill="#9aa89f" font-size="14" text-anchor="middle">
+                  <text x="125" y="198">主卧</text>
+                  <text x="124" y="366">次卧</text>
+                  <text x="376" y="312">客餐厅</text>
+                  <text x="391" y="111">厨房</text>
+                </g>
+              </svg>
+              <p>示例平面图 · 立体演示加载中</p>
+            </div>
+            <div class="room-pins" aria-label="门主灶标记">
+              <button data-focus="door" class="pin door">
+                <span>门</span><em>震宫 · 伏位</em><small>正东 / 起游星</small></button
+              ><button data-focus="bed" class="pin bed">
+                <span>主</span><em>乾宫 · 五鬼</em><small>示例床中心 / 西北</small></button
+              ><button data-focus="kitchen" class="pin kitchen">
+                <span>灶</span><em>艮宫 · 六煞</em><small>示例灶点 / 东北</small>
+              </button>
+            </div>
+            <div class="scene-caption" aria-hidden="true">
+              <span id="caption-num">01</span>
+              <div>
+                <b id="caption-title">从熟悉的平面开始</b>
+                <p id="caption-copy">同一套示例户型，换一个观察角度。</p>
+              </div>
+            </div>
+            <div class="flow-toolbar">
+              <div aria-label="模型气态切换">
+                <button data-qi="flow" aria-pressed="true">流通</button
+                ><button data-qi="trapped" aria-pressed="false">窝气</button
+                ><button data-qi="still" aria-pressed="false">死气</button
+                ><button data-qi="back" aria-pressed="false">背气</button>
+              </div>
+              <button id="flow-toggle" aria-pressed="false">暂停流动</button>
+            </div>
+            <svg class="flow-overlay" aria-label="有方向的动态气路" role="img">
+              <title>沿门洞行进的示意气路；流向以移动箭头为准</title>
+              <g id="route-lines">
+                <path id="route-halo"></path>
+                <path id="route-base"></path>
+                <path id="route-running"></path>
+              </g>
+              <g id="stream-packets"></g>
+              <g id="end-effect">
+                <circle r="15"></circle>
+                <circle r="23"></circle>
+                <path d="M -8 -8 L 8 8 M -8 8 L 8 -8"></path>
+              </g>
+              <g id="route-labels">
+                <g id="route-start">
+                  <circle r="6"></circle>
+                  <rect x="-48" y="16" width="96" height="29" rx="4"></rect>
+                  <text y="35" text-anchor="middle">入气口</text>
+                </g>
+                <g id="route-middle">
+                  <circle r="5"></circle>
+                  <rect x="-48" y="-43" width="96" height="27" rx="4"></rect>
+                  <text y="-25" text-anchor="middle">经过点</text>
+                </g>
+                <g id="route-end">
+                  <circle r="6"></circle>
+                  <rect x="-58" y="-48" width="116" height="29" rx="4"></rect>
+                  <text y="-29" text-anchor="middle">泄气口 → 向外</text>
+                </g>
+              </g>
+            </svg>
+            <div class="qi-badge" hidden>
+              <i></i><span id="qi-badge-label">流通 · 有进有出</span>
+            </div>
+            <button class="pause" id="pause" aria-pressed="false">自动演示</button>
+          </div>
+          <p class="stage-note">示例住宅 · 拖动可旋转 · 点门、主、灶看对应解读</p>
+          <aside class="report-preview" aria-hidden="true">
+            <p class="rp-label">居住环境诊断报告 · 示例</p>
+            <h3>湖畔雅居 · 两室一厅</h3>
+            <dl class="rp-rows">
+              <div>
+                <dt>门</dt>
+                <dd><b>正东 · 震宫</b><span>整盘起点，东四宅</span></dd>
+              </div>
+              <div>
+                <dt>主</dt>
+                <dd><b>西北 · 乾宫 · 五鬼</b><span>星宫相克，宜少做长时间停留</span></dd>
+              </div>
+              <div>
+                <dt>灶</dt>
+                <dd><b>东北 · 艮宫 · 六煞</b><span>火位受制，先看灶向与开口</span></dd>
+              </div>
+            </dl>
+            <p class="rp-note">含八宫游星、门主灶、气路四态与待确认项；拿不准的标成待复核。</p>
+            <a class="rp-link" href="app.html#report/sample">看完整报告 →</a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="info">
+        <h2>报告里有什么</h2>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>项目</th>
+              <th>内容</th>
+              <th>依据</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>门位与宅型</td>
+              <td>入户门落在哪一宫，归东四宅或西四宅</td>
+              <td>以门起伏位，八宫由此排布</td>
+            </tr>
+            <tr>
+              <td>八宫游星</td>
+              <td>八个方位的星名、星宫生克与分级</td>
+              <td>大游年歌（《阳宅爱众篇》卷一）</td>
+            </tr>
+            <tr>
+              <td>门主灶</td>
+              <td>三处落宫与用法，哪处要留意、怎么调整</td>
+              <td>厨房火位看方位与炉灶朝向</td>
+            </tr>
+            <tr>
+              <td>待确认项</td>
+              <td>方向、主位取法、灶向逐条标注</td>
+              <td>拿不准的不硬判</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="info info-split">
+        <div>
+          <h2>报告给建议，拿不准的问师傅。</h2>
+          <p>
+            报告能说的是规则上的建议：这处适合怎么用、要不要调整、还有哪些前提没确认。改墙改门、家里具体情况、想要更细的解法，直接约师傅一对一。
+          </p>
+          <div class="actions">
+            <a class="btn" href="app.html#upload">先看自家的问题</a
+            ><a class="link" href="app.html#report/sample">看样例建议 →</a>
+          </div>
+        </div>
+        <div class="price-box">
+          <p class="price"><b>¥9.9</b><span>示例定价 / 份</span></p>
+          <ul>
+            <li>报告里的建议</li>
+            <li>待确认项清单</li>
+            <li>师傅线上解答</li>
+            <li>上门勘宅（另约）</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="info">
+        <h2>开始之前</h2>
+        <dl class="faq">
+          <dt>什么样的户型图可以用？</dt>
+          <dd>清晰的 JPG 或 PNG 平面图，保留房间边界、门窗和指北标记。支持本机预览与手工定位。</dd>
+          <dt>方向拿不准怎么办？</dt>
+          <dd>可以标记方向未知，报告保留待核实项，不输出确定的房间落宫。</dd>
+          <dt>罗盘与气路是怎么来的？</dt>
+          <dd>
+            首页立体住宅与气路是固定样例；八宫关系来自冻结 Beta
+            的规则表，不会把任意上传图片自动变成这套立体模型。
+          </dd>
+        </dl>
+        <footer class="foot">
+          概念演示 · 示例住宅与朝向均为预设；传统星名与生克仅作文化规则演示，不据此推断现实祸福；原
+          Beta 代码未改动。
+        </footer>
+      </section>
+    </main>
+
+    <div class="scene-data" hidden>
+      <button id="back-demo">返回演示</button>
+      <section id="qi-reading" class="qi-reading">
+        <div class="reading-head">
+          <div>
+            <p class="eyebrow">师承 · 老唐版气法 / 规则情景演示</p>
+            <h2>同一所宅，看四种气的状态。</h2>
+          </div>
+          <p>路径与开口均为演示预设。<br />不是空气流场仿真，也不是 OCR 自动诊断。</p>
+        </div>
+        <div class="qi-options" aria-label="气法四态">
+          <button data-qi="flow" aria-pressed="true">
+            <span>01</span><b>流通之气</b><small>有进有出 · 曲而不直冲</small></button
+          ><button data-qi="trapped" aria-pressed="false">
+            <span>02</span><b>窝气</b><small>气路到尽头 · 无泄口</small></button
+          ><button data-qi="still" aria-pressed="false">
+            <span>03</span><b>死气</b><small>多次转折 · 尽头无泄口</small></button
+          ><button data-qi="back" aria-pressed="false">
+            <span>04</span><b>背气</b><small>背侧向气口 · 示意流向门窗</small>
+          </button>
+        </div>
+        <div class="qi-detail">
+          <div class="qi-explain">
+            <span class="rule-badge">师承规则 · 非原书明文</span>
+            <h3 id="qi-title">流通不等于直进直出。</h3>
+            <p id="qi-description">
+              示例气路由东侧入户，经客餐厅、过道到达西北窗。弯曲路径与开放窗只是部分条件，还需核对缓急、直冲与其他宫位。
+            </p>
+            <div class="qi-trace" id="qi-trace">门 → 客餐厅 → 过道 → 西北窗</div>
+            <p id="qi-condition">
+              流通四要件：有进有出、回旋有情、缓急有度、诸宫皆活。本图无法证实气流缓急，不作实宅成立判断。
+            </p>
+            <button id="watch-qi" class="primary">回到模型，看这条气路 ↗</button>
+          </div>
+          <div class="qi-evidence">
+            <p class="eyebrow">星法 × 气法</p>
+            <h3 id="qi-combined">流通，也不能直接等同于吉。</h3>
+            <p id="qi-star">
+              本例气路通向乾宫，震门排得五鬼星。师承规则强调“凶星得气亦增其势”，所以星位与气态需要合看。
+            </p>
+            <dl>
+              <dt>预设条件</dt>
+              <dd id="qi-assumptions">西北窗作为泄口，门廊可通；整条路径人工绘制。</dd>
+              <dt>当前结论层级</dt>
+              <dd>规则条件演示，尚未自动判断真实气态。</dd>
+              <dt>后续需要补齐</dt>
+              <dd id="qi-inputs">门窗位置与开闭、连通路径、家具朝向及遮挡，并由人工确认。</dd>
+            </dl>
+            <details>
+              <summary>查看规则依据与口径说明</summary>
+              <p id="qi-source"></p>
+              <p>
+                背气按 four_states.背气 的纠正定义表达；总诀的简写存在歧义，未作为动画方向依据。
+              </p>
+              <a
+                href="https://github.com/wps213thb186/yuncheng-server/blob/360680f0fac7d02b5bd96932c9c53a9883f420f9/engine/data/08_qifa_sitai.json"
+                target="_blank"
+                rel="noopener"
+                >查看 GitHub 规则版本 360680f ↗</a
+              >
+            </details>
+          </div>
+        </div>
+      </section>
+      <section class="bazhai-reading" id="reading">
+        <div class="reading-head">
+          <div>
+            <p class="eyebrow">八宅大游年 / 震门示例</p>
+            <h2>门一定，八宫游星随之展开。</h2>
+          </div>
+          <p>先看落宫，再看星宫生克。<br />不是把“吉星 / 凶星”直接等同于房间结论。</p>
+        </div>
+        <div class="reading-layout">
+          <div class="palace-wrap">
+            <div class="map-caption">
+              <span>↑ 北 · 上北下南</span
+              ><label><input type="checkbox" id="show-bazhai" checked /> 显示模型九宫</label>
+            </div>
+            <div class="palaces" aria-label="震门八宫游星图"></div>
+            <p class="legend">
+              <i class="good-dot"></i>传统吉星 <i class="bad-dot"></i>传统凶星
+              <i class="base-dot"></i>门宫伏位 / 中宫不排星
+            </p>
+          </div>
+          <article class="interpretation">
+            <div class="reading-tabs">
+              <button data-reading="door" aria-pressed="true">门 · 入户</button
+              ><button data-reading="bed" aria-pressed="false">主 · 示例主位</button
+              ><button data-reading="kitchen" aria-pressed="false">灶 · 灶点</button>
+            </div>
+            <p class="eyebrow" id="reading-kicker">震门 / 东四宅组</p>
+            <h3 id="reading-title">门落震宫，以伏位起大游年。</h3>
+            <p id="reading-text">
+              示例入户门位于正东的震宫。以此为起点，八宫依次排布游星；伏位在这里表示门宫起点，不直接简化为“吉位”。
+            </p>
+            <div class="relation-line" id="relation-line">入户门 → 正东震宫 → 伏位</div>
+            <p class="reading-limit" id="reading-limit">
+              这是预设上北下南、规则矩形等分九宫的示例；实际户型需先核对指北、边界与门位。
+            </p>
+            <details open>
+              <summary>来源与口径</summary>
+              <p id="reading-source">
+                八宅通法 ·
+                原文待复核。参照《阳宅爱众篇》卷一“大游年歌”“东西四宅论”；本例游星表已与冻结 Beta
+                引擎逐项对照。
+              </p>
+            </details>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <div class="deck-controls" aria-hidden="true">
+      <section class="story-steps" id="how">
+        <button data-step="0" aria-pressed="true"><span>一</span></button
+        ><button data-step="1" aria-pressed="false"><span>二</span></button
+        ><button data-step="2" aria-pressed="false"><span>三</span></button
+        ><button data-step="3" aria-pressed="false"><span>四</span></button>
+      </section>
+    </div>
+
+    <script src="spatial/bazhai-demo-data.js"></script>
+    <script src="spatial/three-d-stage.js"></script>
+    <script>
+      // 单页全景：3D 演示自动走一遍，文字跟着换；点步骤可手动切。
+      (function () {
+        var copies = Array.prototype.slice.call(document.querySelectorAll('.step-copy'));
+        var tabs = Array.prototype.slice.call(document.querySelectorAll('.step-tabs button'));
+        var replay = document.getElementById('replay');
+        var textIdx = -1;
+        var auto = true;
+        var timer = null;
+
+        function playStep(step) {
+          var btn = document.querySelector('.story-steps button[data-step="' + step + '"]');
+          if (btn && !btn.disabled && btn.onclick) {
+            btn.click();
+            return true;
+          }
+          return false;
+        }
+
+        function setBoard(on) {
+          var cb = document.querySelector('#show-bazhai');
+          if (!cb || cb.checked === on) return;
+          cb.checked = on;
+          cb.dispatchEvent(new Event('change'));
+        }
+
+        function renderText(i) {
+          textIdx = i;
+          copies.forEach(function (el, k) {
+            el.classList.toggle('on', k === i);
+          });
+          tabs.forEach(function (el, k) {
+            el.setAttribute('aria-current', k === i ? 'true' : 'false');
+          });
+        }
+
+        // 四步与 3D 状态一一对应，手动点和自动播走同一套配置
+        var STEPS = [
+          { step: 1, decor: false, marks: false, board: false, status: '上传户型 · 立体宅' },
+          { step: 1, decor: true, marks: false, board: false, status: '罗盘扫描 · 定朝向' },
+          { step: 2, decor: false, marks: true, board: false, status: '确认门位 · 点亮门灶' },
+          {
+            step: 3,
+            decor: false,
+            marks: false,
+            board: false,
+            status: '气流 · 四态流转',
+            qi: true
+          },
+          {
+            step: 2,
+            decor: true,
+            marks: true,
+            board: true,
+            status: '诊断报告 · 八宫与点位',
+            report: true
+          }
+        ];
+
+        function apply3D(i) {
+          var c = STEPS[i] || STEPS[0];
+          var ok = playStep(c.step);
+          if (!ok) return false;
+          setBoard(!!c.board);
+          if (window.YC_HOME) {
+            window.YC_HOME.decor(!!c.decor);
+            if (window.YC_HOME.marks) window.YC_HOME.marks(!!c.marks);
+            if (window.YC_HOME.mode) window.YC_HOME.mode(c.marks ? 'marks' : 'full');
+            window.YC_HOME.setStatus(c.status);
+          }
+          if (c.qi) {
+            var flowBtn = document.querySelector('.flow-toolbar [data-qi="flow"]');
+            if (flowBtn) flowBtn.click();
+          }
+          var stage = document.querySelector('.stage');
+          if (stage) stage.classList.toggle('show-report', !!c.report);
+          return true;
+        }
+
+        function show(i, silent) {
+          renderText(i);
+          var ok = apply3D(i);
+          if (!silent) auto = false;
+          return ok;
+        }
+
+        function startAuto() {
+          clearInterval(timer);
+          auto = true;
+          show(0, true);
+          timer = setInterval(function () {
+            if (!auto) return;
+            if (textIdx >= 4) {
+              clearInterval(timer);
+              return;
+            }
+            show(textIdx + 1, true);
+          }, 4600);
+        }
+
+        tabs.forEach(function (el, k) {
+          el.addEventListener('click', function () {
+            auto = false;
+            clearInterval(timer);
+            show(k, true);
+          });
+        });
+
+        if (replay)
+          replay.addEventListener('click', function () {
+            startAuto();
+          });
+
+        // 3D 模块是 deferred 加载的，首次可能还没绑定事件：重试；即便 3D 不可用，文字也照常轮播
+        var tries = 0;
+        function boot() {
+          if (show(0, true) || tries++ > 8) {
+            startAuto();
+            return;
+          }
+          setTimeout(boot, 600);
+        }
+        boot();
+      })();
+    </script>
+  </body>
+</html>
